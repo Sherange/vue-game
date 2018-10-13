@@ -3,16 +3,23 @@ new Vue({
   data: {
     playerHealth: 100,
     monsterHealth: 100,
-    isGameRunning: false
+    isGameRunning: false,
+    logs: []
   },
   methods: {
     handleStart: function() {
       this.isGameRunning = true;
       this.playerHealth = 100;
       this.monsterHealth = 100;
+      this.logs = [];
     },
     handleAttack: function() {
-      this.monsterHealth -= this.calculateDamge(3, 10);
+      var damage = this.calculateDamge(3, 10);
+      this.monsterHealth -= damage;
+      this.logs.unshift({
+        isPlayer: true,
+        text: "Player hit Monster " + damage
+      });
       if (this.checkWin()) {
         return;
       }
@@ -33,12 +40,21 @@ new Vue({
       } else {
         this.playerHealth = 100;
       }
+      this.logs.unshift({
+        isPlayer: true,
+        text: "Player heals for 10"
+      });
     },
     handleGiveUp: function() {
       this.isGameRunning = false;
     },
     monsterAttack: function() {
-      this.playerHealth -= this.calculateDamge(5, 12);
+      var damage = this.calculateDamge(5, 12);
+      this.logs.unshift({
+        isPlayer: false,
+        text: "Monster hit Player " + damage
+      });
+      this.playerHealth -= damage;
     },
     calculateDamge: function(min, max) {
       return Math.max(Math.floor(Math.random() * max) + 1, min);
