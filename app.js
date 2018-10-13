@@ -28,12 +28,16 @@ new Vue({
       this.checkWin();
     },
     handleHeal: function() {
-      console.log("handleHeal");
+      if (this.playerHealth <= 90) {
+        this.playerHealth += 10;
+      } else {
+        this.playerHealth = 100;
+      }
     },
     handleGiveUp: function() {
-      console.log("handleGiveUp");
+      this.isGameRunning = false;
     },
-    monsterAttack : function () {
+    monsterAttack: function() {
       this.playerHealth -= this.calculateDamge(5, 12);
     },
     calculateDamge: function(min, max) {
